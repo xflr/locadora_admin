@@ -5,8 +5,8 @@ from django.http import JsonResponse
 from django.views.generic import TemplateView
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Cat_Preco, Genero, Clientes, Inventario
-from .forms import Cat_Preco_Form, Genero_Form, Clientes_Form, Inventario_Form
+from .models import Cat_Preco, Genero, Clientes, Inventario, Pedidos, Itens_Pedido
+from .forms import Cat_Preco_Form, Genero_Form, Clientes_Form, Inventario_Form, Pedidos_Form
 from django.utils import timezone
 
 class Home(TemplateView):
@@ -384,6 +384,97 @@ class Create_Inventario(LoginRequiredMixin, TemplateView):
                    post.save()
                    print("form saved")
                    return redirect('inventario')
+               else:
+                   print("invalid form")
+                   print("errors:", form.errors)
+
+class Home_Pedidos(TemplateView):
+   template_name = 'pedidos.html'
+
+   def get(self, request, *args):
+       data = Pedidos.objects.all()
+       args = {'pub': data}
+       return render(request, self.template_name, args)
+
+class Edit_Pedidos(LoginRequiredMixin, TemplateView):
+   template_name = 'edit_pedidos.html'
+
+   def get(self, request, *args, **kwargs):
+       id = int(kwargs['id'])
+       post = get_object_or_404(Pedidos, id=id)
+       print("post:", post)
+       form = Pedidos_Form(instance=post)
+       data = Pedidos.objects.all()
+       for d in data:
+           print("Nome:", d.nome)
+       args = {'id': id, 'form': form, 'post': post, 'data': data}
+       return render(request, self.template_name, args)
+
+   def post(self, request, **kwargs):
+       pedidos = get_object_or_404(Pedidos, id=int(kwargs['id']))
+       if request.method == "POST":
+           form = Pedidos_Form(request.POST, instance=pedidos)
+           if request.POST.get("submitbtn"):
+               if form.is_valid():
+                   print("validating form")
+                   post = form.save(commit=False)
+                   post.save()
+                   print("form saved")
+                   return redirect('pedidos')
+               else:
+                   print("invalid form")
+                   print("errors:", form.errors)
+
+class Del_Pedidos(LoginRequiredMixin, TemplateView):
+   template_name = 'del_pedidos.html'
+
+   def get(self, request, *args, **kwargs):
+       id = int(kwargs['id'])
+       post = get_object_or_404(Pedidos, id=id)
+       print("post:", post)
+       form = Pedidos_Form(instance=post)
+       args = {'id': id, 'form': form, 'post': post}
+       return render(request, self.template_name, args)
+
+   def post(self, request, **kwargs):
+       pedidos = get_object_or_404(Pedidos, id=int(kwargs['id']))
+       if request.method == "POST":
+           form = Pedidos_Form(request.POST, instance=pedidos)
+           if request.POST.get("submitbtn"):
+               #if form.is_valid():
+                   print("validating form")
+                  # post = form.save(commit=False)
+                  # post.save()
+                   pedidos.delete()
+                   print("form saved")
+                   return redirect('pedidos')
+               #else:
+               #    print("invalid form")
+               #    print("errors:", form.errors)
+
+
+
+class Create_Pedidos(LoginRequiredMixin, TemplateView):
+   template_name = 'new_pedidos.html'
+
+   def get(self, request, *args):
+       form = Pedidos_Form()
+       pedidos = Pedidos.objects.all()
+       args = {'form': form, 'posts': pedidos}
+       return render(request, self.template_name, args)
+
+   def post(self, request):
+       print("inside post")
+       if request.method == "POST":
+           form = Pedidos_Form(request.POST)
+           if request.POST.get("submitbtn"):
+               print("Submit clicked")
+               if form.is_valid():
+                   print("validating form")
+                   post = form.save(commit=False)
+                   post.save()
+                   print("form saved")
+                   return redirect('Pedidos')
                else:
                    print("invalid form")
                    print("errors:", form.errors)

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Histórico de Pedidos</title>
+
+   <script src='{% static 'js/font.js' %}'></script>
+   <link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all"/>
+
+</head>
+<body>
+<div class="header">
+ <h2>Histórico de Pedidos</h2>
+</div>
+<a href='/'>Voltar</a>
+<div align="center">
+
+<a href="{% url 'new_pedidos' %}"> Cadastrar nova locação/venda  <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+</div>
+
+<div class="content">
+<br>
+<table style="width:100%;font-size:12px;text-align: center;">
+<thead>
+   <tr>
+	<th>EDITAR</th>
+	<th>CLIENTE</th>
+	<th>DATA ABERTURA</th>
+	<th>PREV. ENTREGA</th>
+	<th>VALOR ESTIMADO</th>
+	<th>QUANT. ITENS</th>
+	<th>REMOVER</th>
+   </tr>
+</thead>
+<tbody>	
+{% for p in pub %}
+<tr>
+   <td> <a href="{% url 'edit_pedidos' p.id %}">  <i class="fa fa-pen"></i></a></td> 
+   <td> {{ p.cliente.nome }} </td> 
+   <td> {{ p.data_abertura }} </td>
+   <td> {{ p.data_prev_fechamento }} </td>
+   <td> {{ p.valor_previsto }} </td>
+   <td> {{ p.quant_itens_pedido }} </td> 
+   <td> <a href="{% url 'del_pedidos' p.id %}"> <i class="fa fa-trash"></i></a></td>
+   <p class="card-text">{{p.post|slice:":200" }}</p>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+
+</body>
+</html>

@@ -4,7 +4,9 @@ from .models import Genero
 from .models import Clientes
 from .models import Inventario
 from .models import Midia
+from .models import Pedidos
 from django.forms import ModelChoiceField
+import datetime
 
 class NameChoiceField(ModelChoiceField):
 
@@ -97,3 +99,25 @@ class Inventario_Form(forms.ModelForm):
    class Meta:
        model = Inventario
        fields = ('titulo', 'barcode', 'genero', 'class_indicativa', 'total_estoque', 'total_disponivel', 'midia', 'max_dias', 'cat_preco', 'preco_venda', )
+
+class Pedidos_Form(forms.ModelForm):
+   
+   cliente = NameChoiceField(queryset=Clientes.objects.all())
+  
+   data_abertura = forms.DateField(initial=datetime.date.today,
+    widget=forms.DateInput(format='%d/%m/%Y', attrs={'class': "input", 'placeholder': "Ex.: dd/mm/aaaa", 'data-mask': "##/##/####"}))
+
+   data_prev_fechamento = forms.DateField(
+    widget=forms.DateInput(format='%d/%m/%Y', attrs={'class': "input", 'placeholder': "Ex.: dd/mm/aaaa", 'data-mask': "##/##/####"}))
+
+   data_fechamento = forms.DateField(
+    widget=forms.DateInput(format='%d/%m/%Y', attrs={'class': "input", 'placeholder': "Ex.: dd/mm/aaaa", 'data-mask': "##/##/####"}))
+
+   valor_previsto = forms.DecimalField(required=True, max_digits=8, decimal_places=2, localize=True)
+
+   quant_itens_pedido = forms.DecimalField(required=True, max_digits=8, decimal_places=0, localize=True)
+
+   class Meta:
+       model = Inventario
+       fields = ('cliente', 'data_abertura', 'data_prev_fechamento', 'data_fechamento', 'valor_previsto', 'quant_itens_pedido', )
+

@@ -1,9 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime, date
+from django.db.models import Q, Count
 
 # Create your models here.
-
 
 class Genero(models.Model):
    id = models.AutoField(primary_key=True)
@@ -67,6 +67,7 @@ class Pedidos(models.Model):
    valor_multa = models.DecimalField(max_digits=15, decimal_places=2, null=True)
    valor_final = models.DecimalField(max_digits=15, decimal_places=2, null=True)
    observacoes = models.CharField(max_length=300, null=True)
+   quant_itens_pedido = lambda self: self.itens_pedido_set.count()
    pago = models.BooleanField()
    compra = models.BooleanField()
    status = models.BooleanField()
@@ -77,4 +78,4 @@ class Itens_Pedido(models.Model):
   quantidade = models.IntegerField()
   valor_unitario = models.DecimalField(max_digits=15, decimal_places=2)
   valor_total = models.DecimalField(max_digits=15, decimal_places=2)
- 
+
