@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Lista de Clientes</title>
+   <script src='{% static 'js/font.js' %}'></script>
+   <link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all"/>
+
+</head>
+<body>
+<div class="header">
+ <h2>Lista de Clientes</h2>
+</div>
+<a href='/'>Voltar</a>
+<div align="center">
+
+<a href="{% url 'new_clientes' %}"> Cadastrar novo cliente  <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+</div>
+
+<div class="content">
+<br>
+<table style="width:100%;font-size:12px;text-align: center;">
+<thead>
+   <tr>
+	<th>EDITAR</th>
+	<th>NOME</th>
+	<th>DATA DE NASC.</th>
+	<th>ENDEREÇO</th>
+	<th>CEP</th>
+	<th>TELEFONE</th>
+	<th>E-MAIL</th>
+	<th>CPF</th>
+	<th>FATOR MULTA</th>
+	<th>PONTOS FIDELIDADE</th>
+	<th>REMOVER</th>
+   </tr>
+</thead>
+<tbody>	
+{% for p in pub %}
+<tr>
+   <td> <a href="{% url 'edit_clientes' p.id %}">  <i class="fa fa-pen"></i></a></td> 
+   <td> {{ p.nome }} </td> 
+   <td> {{ p.nascimento }} </td>
+   <td> {{ p.endereco }} </td>
+   <td> {{ p.cep }} </td>
+   <td> {{ p.telefone }} </td>
+   <td> {{ p.email }} </td>
+   <td> {{ p.cpf }} </td>
+   <td> {{ p.fator_multa }} </td>
+   <td> {{ p.pontos_fidelidade }} </td> 
+   <td> <a href="{% url 'del_clientes' p.id %}"> <i class="fa fa-trash"></i></a></td>
+   <p class="card-text">{{p.post|slice:":200" }}</p>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+
+</body>
+</html>

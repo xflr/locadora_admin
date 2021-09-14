@@ -1,0 +1,50 @@
+	<!DOCTYPE html>
+	{% load static %}
+	<html lang="en">
+	<head>
+	   <meta charset="UTF-8">
+	   <title>Lista de inventário</title>
+	   <script src='{% static 'js/font.js' %}'></script>
+	   <link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all"/>
+
+	</head>
+	<body>
+	<div class="header">
+	 <h2>Lista de Inventario</h2>
+</div>
+<a href='/'>Voltar</a>
+<div align="center">
+
+<a href="{% url 'new_inventario' %}"> Cadastrar novo item  <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+</div>
+
+<div class="content">
+<br>
+<table style="width:100%;font-size:12px;text-align: center;">
+<thead>
+   <tr>
+	<th>EDITAR</th>
+	<th>TITULO</th>
+	<th>BARCODE</th>
+	<th>GENERO</th>
+	<th>REMOVER</th>
+   </tr>
+</thead>
+<tbody>	
+{% for p in pub %}
+<tr>
+   <td> <a href="{% url 'edit_inventario' p.id %}">  <i class="fa fa-pen"></i></a></td> 
+   <td> {{ p.titulo }} </td> 
+   <td> {{ p.barcode }} </td>
+   <td> {{ p.genero.nome }} </td>
+   <td> <a href="{% url 'del_inventario' p.id %}"> <i class="fa fa-trash"></i></a></td>
+   <p class="card-text">{{p.post|slice:":200" }}</p>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+
+
+</body>
+</html>

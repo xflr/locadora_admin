@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <script src='{% static 'js/font.js' %}'></script>
+   <link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all"/>
+
+<style>
+.center {
+  margin: auto;
+  width: 60%;
+  border: 3px solid #73AD21;
+  padding: 10px;
+}
+</style>
+<title>Locadora Admin - Login</title>
+</head>
+
+<body>
+
+<div class='header'>
+	<h2> Bem vindo!</h2>
+</div>
+
+<div class='center'>
+
+{% block content %}
+
+  {% if form.errors %}
+    <p>Login e/ou senha incorretos. Tente novamente.</p>
+  {% endif %}
+
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p>Você não tem acesso a este recurso. Peça ao administrador, se necessário.</p>
+    {% else %}
+      <p>Por favor, efetue o login para acessar este recurso.</p>
+    {% endif %}
+  {% endif %}
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <table class='center'>
+	<thead>
+		<th width='40%'></th>
+		<th width='60%'></th>
+	</thead>
+	<tbody>
+      <tr>
+        <td>usuário: </td>
+        <td>{{ form.username }}</td>
+      </tr>
+      <tr>
+        <td>senha: </td>
+        <td>{{ form.password }}</td>
+      </tr>
+	</tbody>
+    </table>
+    <input type="submit" value="login" />
+    <input type="hidden" name="next" value="{{ next }}" />
+  </form>
+
+  {# Assumes you setup the password_reset view in your URLconf #}
+  <p><a href="{% url 'password_reset' %}">Esqueceu a senha?</a></p>
+
+{% endblock %}
+
+</div>
+</body>
+</html>

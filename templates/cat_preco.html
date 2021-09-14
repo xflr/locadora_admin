@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Categoria de preços</title>
+   <script src='{% static 'js/font.js' %}'></script>
+   <link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all"/>
+
+</head>
+<body>
+<div class="header">
+ <h2>Categoria de Preços</h2>
+</div>
+<a href='/'>Voltar</a>
+
+<div align="center">
+
+<a href="{% url 'new_cat_preco' %}"> Criar nova categoria <i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+</div>
+
+<div class="content">
+<br>
+<table style="width:800px;">
+
+{% for p in pub %}
+<tr>
+   <td>
+   <a href="{% url 'edit_cat_preco' p.id %}">  <i class="fa fa-pen"></i></a></td> <td>Categoria:  {{ p.nome }} </td> <td> Preço da diária: R$ {{p.valor}} </td>
+   <td>
+   <td><a href="{% url 'del_cat_preco' p.id %}"> <i class="fa fa-trash"></i></a></td>
+   <p class="card-text">{{p.post|slice:":200" }}</p>
+   </td>
+</tr>
+{% endfor %}
+</table>
+</div>
+
+
+</body>
+</html>

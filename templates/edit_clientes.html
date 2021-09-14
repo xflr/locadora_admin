@@ -1,0 +1,87 @@
+	<!DOCTYPE html>
+	{% load static %}
+	<html lang="en" class="no-js">
+	<head>
+	   {% block title %}
+	   <title>Lista de Clientes</title>
+	   {% endblock title %}
+	   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+	   <!-- Place your favicon.ico and apple-touch-icon.png in the template root directory -->
+	   <link href="favicon.ico" rel="shortcut icon">
+	   <link rel="shortcut icon" href="" type="image/ico">
+	   <link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all"/>
+
+	   <style>
+	   input[type=text], select {
+	     width: 40%;
+	     padding: 12px 20px;
+	     margin: 8px 0;
+	     display: inline-block;
+	     border: 1px solid #ccc;
+	     border-radius: 8px;
+	     box-sizing: border-box;
+	   }
+	   </style>
+	</head>
+	<body>
+	<div class="header">
+	 <h2>Gêneros</h2>
+</div>
+
+<div align="center">
+<H2>Editar cliente</H2>
+<br><br>
+</div>
+
+<div align="center">
+<form method="POST">
+   {% csrf_token %}
+
+<table style="width:1200px;">
+<thead>
+<tr>
+    <th width='30%'> </th>
+    <th width='70%'> </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+   <td><label>Nome:</label></td> <td> {{ form.nome }} </td>
+</tr>
+<tr>
+   <td><label>Data de Nasc.:</label></td> <td> {{ form.nascimento }} </td>
+</tr>
+<tr>
+   <td><label>Endereço:</label></td> <td> {{ form.endereco }} </td>
+</tr>
+<tr>
+   <td><label>CEP:</label></td> <td> {{ form.cep }} </td>
+</tr>
+<tr>
+   <td><label>Telefone:</label></td> <td> {{ form.telefone }} </td>
+</tr>
+<tr>
+   <td><label>e-mail:</label></td> <td> {{ form.email }} </td>
+</tr>
+<tr>
+   <td><label>CPF:</label></td> <td> {{ form.cpf }} </td>
+</tr>
+<tr>
+   <td><label>Fator Multa:</label></td> <td> {{ form.fator_multa }} </td>
+</tr>
+<tr>
+   <td><label>Pontos Fidelidade:</label></td> <td> {{ form.pontos_fidelidade }} </td>
+</tr>
+</tbody>
+</table>
+
+<button class="button button2" id="submitbtn" type="submit" name="submitbtn" value="submitbtn">Salvar</button>
+   </div>
+</form>
+<br>
+<a href='/cat_genero'>Voltar à pagina anterior</a>
+</div>
+
+</body>
+</html>

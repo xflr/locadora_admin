@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" class="no-js">
+<head>
+   {% block title %}
+   <title>Lista de Gêneros</title>
+   {% endblock title %}
+   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+   <!-- Place your favicon.ico and apple-touch-icon.png in the template root directory -->
+   <link href="favicon.ico" rel="shortcut icon">
+   <link rel="shortcut icon" href="" type="image/ico">
+   <link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all"/>
+
+   <style>
+   input[type=text], select {
+     width: 40%;
+     padding: 12px 20px;
+     margin: 8px 0;
+     display: inline-block;
+     border: 1px solid #ccc;
+     border-radius: 8px;
+     box-sizing: border-box;
+   }
+   </style>
+</head>
+<body>
+<div class="header">
+ <h2>Categorias</h2>
+</div>
+
+<div align="center">
+<H2>Criar novo gênero</H2>
+<br><br>
+</div>
+
+<div align="center">
+<form method="POST">
+   {% csrf_token %}
+   <div class="u-form-group">
+   <label>Gênero     :      </label>
+   {{ form.nome }}
+   <br><br>
+
+<button class="button button2" id="submitbtn" type="submit" name="submitbtn" value="submitbtn">Criar novo gênero</button>
+</div>
+</form>
+<br>
+<a href='/cat_genero'>Voltar à pagina anterior</a>
+</div>
+
+</body>
+</html>

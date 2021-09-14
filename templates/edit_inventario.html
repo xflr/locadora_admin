@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" class="no-js">
+<head>
+   {% block title %}
+   <title>INVENTARIO</title>
+   {% endblock title %}
+   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+   <!-- Place your favicon.ico and apple-touch-icon.png in the template root directory -->
+   <link href="favicon.ico" rel="shortcut icon">
+   <link rel="shortcut icon" href="" type="image/ico">
+   <link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all"/>
+
+   <style>
+   input[type=text], select {
+     width: 40%;
+     padding: 12px 20px;
+     margin: 8px 0;
+     display: inline-block;
+     border: 1px solid #ccc;
+     border-radius: 8px;
+     box-sizing: border-box;
+   }
+   </style>
+</head>
+<body>
+<div class="header">
+ <h2>Gêneros</h2>
+</div>
+
+<div align="center">
+<H2>Editar Item</H2>
+<br><br>
+</div>
+
+<div align="center">
+<form method="POST">
+   {% csrf_token %}
+
+<table style="width:1200px;">
+<thead>
+<tr>
+    <th width='30%'> </th>
+    <th width='70%'> </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+   <td><label>Titulo:</label></td> <td> {{ form.titulo }} </td>
+</tr>
+<tr>
+   <td><label>Barcode:</label></td> <td> {{ form.barcode }} </td>
+</tr>
+<tr>
+   <td><label>Genero:</label></td> <td> {{ form.genero }} </td>
+</tr>
+<tr>
+   <td><label>Class. Indicativa:</label></td> <td> {{ form.class_indicativa }} </td>
+</tr>
+<tr>
+   <td><label>Estoque:</label></td> <td> {{ form.total_estoque }} </td>
+</tr>
+<tr>
+   <td><label>Disponíveis:</label></td> <td> {{ form.total_disponivel }} </td>
+</tr>
+<tr>
+   <td><label>Tipo Midia:</label></td> <td> {{ form.midia }} </td>
+</tr>
+<tr>
+   <td><label>Loc. Máxima:</label></td> <td> {{ form.max_dias }} </td>
+</tr>
+<tr>
+   <td><label>Cat. de Preço:</label></td> <td> {{ form.cat_preco }} </td>
+</tr>
+<tr>
+   <td><label>Preço p/ venda:</label></td> <td> {{ form.preco_venda }} </td>
+</tr>
+
+
+</tbody>
+</table>
+
+
+<button class="button button2" id="submitbtn" type="submit" name="submitbtn" value="submitbtn">Salvar</button>
+</div>
+</form>
+<br>
+<a href='/inventario'>Voltar à pagina anterior</a>
+</div>
+
+</body>
+</html>
