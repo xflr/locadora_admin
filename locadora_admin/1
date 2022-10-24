@@ -320,7 +320,7 @@ class Edit_Inventario(LoginRequiredMixin, TemplateView):
        return render(request, self.template_name, args)
 
    def post(self, request, **kwargs):
-       inventario = get_object_or_404(Inventario, id=int(kwargs['id']))
+       inventario = get_object_or_404(Clientes, id=int(kwargs['id']))
        if request.method == "POST":
            form = Inventario_Form(request.POST, instance=inventario)
            if request.POST.get("submitbtn"):
@@ -406,7 +406,7 @@ class Edit_Pedidos(LoginRequiredMixin, TemplateView):
        form = Pedidos_Form(instance=post)
        data = Pedidos.objects.all()
        for d in data:
-           print("ID Pedido:", d.id)
+           print("Nome:", d.nome)
        args = {'id': id, 'form': form, 'post': post, 'data': data}
        return render(request, self.template_name, args)
 

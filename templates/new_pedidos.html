@@ -3,7 +3,7 @@
 	<html lang="en" class="no-js">
 	<head>
 	   {% block title %}
-	   <title>Lista de Clientes</title>
+	   <title>Novo Pedido</title>
 	   {% endblock title %}
 	   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -28,11 +28,11 @@
 	</head>
 	<body>
 	<div class="header">
-	 <h2>Categorias</h2>
+	 <h2>Novo Pedido</h2>
 </div>
 
 <div align="center">
-<H2>Cadastrar novo cliente</H2>
+<H2>Cadastrar novo Pedido</H2>
 <br><br>
 </div>
 
@@ -49,41 +49,29 @@
 </thead>
 <tbody>
 <tr>
-   <td><label>Nome:</label></td> <td> {{ form.nome }} </td>
+   <td><label>Cliente:</label></td> <td> {{ form.cliente }} </td>
 </tr>
 <tr>
-   <td><label>Data de Nasc.:</label></td> <td> {{ form.nascimento }} </td>
+   <td><label>Data Abertura Pedido</label></td> <td> {{ form.data_abertura }} </td>
 </tr>
 <tr>
-   <td><label>Endereço:</label></td> <td> {{ form.endereco }} </td>
+   <td><label>Data Prev. Devolução:</label></td> <td> {{ form.data_prev_fechamento }} </td>
 </tr>
 <tr>
-   <td><label>CEP:</label></td> <td> {{ form.cep }} </td>
+   <td><label>Valor Previsto:</label></td> <td> {{ form.valor_previsto }} </td>
 </tr>
 <tr>
-   <td><label>Telefone:</label></td> <td> {{ form.telefone }} </td>
-</tr>
-<tr>
-   <td><label>e-mail:</label></td> <td> {{ form.email }} </td>
-</tr>
-<tr>
-   <td><label>CPF:</label></td> <td> {{ form.cpf }} </td>
-</tr>
-<tr>
-   <td><label>Fator Multa:</label></td> <td> {{ form.fator_multa }} </td>
-</tr>
-<tr>
-   <td><label>Pontos Fidelidade:</label></td> <td> {{ form.pontos_fidelidade }} </td>
+   <td><label>Quantidade de itens:</label></td> <td> {{ form.quant_itens_pedido }} </td>
 </tr>
 </tbody>
 </table>
 
 
-<button class="button button2" id="submitbtn" type="submit" name="submitbtn" value="submitbtn">Criar novo cliente</button>
+<button class="button button2" id="submitbtn" type="submit" name="submitbtn" value="submitbtn">Criar Pedido</button>
 </div>
 </form>
 <br>
-<a href='/clientes'>Voltar à pagina anterior</a>
+<a href='/pedidos'>Voltar à pagina anterior</a>
 </div>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.14/jquery.mask.min.js"></script>
