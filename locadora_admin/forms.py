@@ -5,6 +5,7 @@ from .models import Clientes
 from .models import Inventario
 from .models import Midia
 from .models import Pedidos
+from .models import Itens_Pedido
 from django.forms import ModelChoiceField
 import datetime
 
@@ -12,6 +13,11 @@ class NameChoiceField(ModelChoiceField):
 
     def label_from_instance(self, obj):
         return f'{obj.nome}'
+
+class NameChoiceField1(ModelChoiceField):
+
+    def label_from_instance(self, obj):
+        return f'{obj.titulo}'
 
 class Cat_Preco_Form(forms.ModelForm):
    nome = forms.CharField(required=True, max_length=200, widget=forms.TextInput(
@@ -102,6 +108,8 @@ class Inventario_Form(forms.ModelForm):
 
 class Pedidos_Form(forms.ModelForm):
    
+   id = forms.DecimalField(required=False, max_digits=8, decimal_places=0, localize=True)
+
    cliente = NameChoiceField(queryset=Clientes.objects.all())
   
    data_abertura = forms.DateField(initial=datetime.date.today,
@@ -118,6 +126,20 @@ class Pedidos_Form(forms.ModelForm):
    quant_itens_pedido = forms.DecimalField(required=True, max_digits=8, decimal_places=0, localize=True)
 
    class Meta:
-       model = Inventario
-       fields = ('cliente', 'data_abertura', 'data_prev_fechamento', 'data_fechamento', 'valor_previsto', 'quant_itens_pedido', )
+       model = Pedidos
+       fields = ('id', 'cliente', 'data_abertura', 'data_prev_fechamento', 'data_fechamento', 'valor_previsto', 'quant_itens_pedido', )
+
+class Item_Pedido_Form(forms.ModelForm):
+   pedido = forms.DecimalField(required=True, max_digits=2, decimal_places=0, localize=True)
+   titulo = NameChoiceField1(queryset=Inventario.objects.all())
+   quantidade = forms.DecimalField(required=True, max_digits=2, decimal_places=0, localize=True)
+   valor = forms.DecimalField(required=True, max_digits=8, decimal_places=2, localize=True)
+
+   class Meta:
+       model = Itens_Pedido
+       fields = ('pedido', 'titulo', 'item', 'quantidade', 'valor_unitario', 'valor_total',)
+       widgets = {
+        'pedido': forms.HiddenInput(),
+       }
+
 

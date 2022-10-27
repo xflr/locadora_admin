@@ -66,7 +66,31 @@
 </tbody>
 </table>
 
-
+<a href="{% url 'new_item_pedido' %}">Adicionar item ao pedido <i class="fa fa-plus-circle" aria-hidden="true"></i></a><br>
+<div class="content">
+<br>
+<table style="width:100%;font-size:12px;text-align: center;">
+<thead>
+   <tr>
+        <th>TITULO</th>
+        <th>QUANTIDADE</th>
+        <th>VALOR UN.</th>
+        <th>DELETAR</th>
+   </tr>
+</thead>
+<tbody>
+{% for p in pub %}
+<tr>
+   <td> {{ p.titulo }} </td>
+   <td> {{ p.quantidade }} </td>
+   <td> {{ p.valor_unitario }} </td>
+   <td> <a href="{% url 'del_item_pedido' p.id %}"> <i class="fa fa-trash"></i></a></td>
+   <p class="card-text">{{p.post|slice:":200" }}</p>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
 <button class="button button2" id="submitbtn" type="submit" name="submitbtn" value="submitbtn">Criar Pedido</button>
 </div>
 </form>
