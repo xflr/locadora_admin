@@ -51,32 +51,28 @@
 <form method="POST">
    {% csrf_token %}
    <div class="u-form-group">
-	<table style="width:1200px;">
+	<table style="width:1400px;">
 	  <thead>
 	    <tr>
-	      <th width='30%'> </th>
-              <th width='70%'> </th>
+	      <th width='10%'> </th>
+              <th width='40%'> </th>
+              <th width='10%'> </th>
+              <th width='40%'> </th>
+              
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><label>ID do Pedido:</label></td> <td> {{ form.id }} </td>
-            </tr>
-
-            <tr>
               <td><label>Cliente:</label></td> <td> {{ form.cliente }} {{ param.cliente }} </td>
             </tr>
             <tr>
               <td><label>Data Abertura Pedido</label></td> <td> {{ form.data_abertura }} </td>
-            </tr>
-            <tr>
               <td><label>Data Prev. Devolução:</label></td> <td> {{ form.data_prev_fechamento }} </td>
             </tr>
             <tr>
               <td><label>Valor Previsto:</label></td> <td> {{ form.valor_previsto }} </td>
-            </tr>
-            <tr>
-            <td><label>Quantidade de itens:</label></td> <td> {{ form.quant_itens_pedido }} </td>
+              <td><label>Quantidade de itens:</label></td> <td> {{ form.quant_itens_pedido }} </td>
             </tr>
           </tbody>
         </table>
