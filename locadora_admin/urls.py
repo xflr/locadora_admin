@@ -28,10 +28,11 @@ urlpatterns = [
               
               path('pedidos/', login_required(Home_Pedidos.as_view()), name='pedidos'),
               path('new_pedidos/', login_required(Create_Pedidos.as_view()), name='new_pedidos'),
+              path('new_pedidos/<int:id>/', login_required(Create_Pedidos.as_view()), name='new_pedidos'),
               path('del_pedidos/<int:id>/', permission_required('locadora_admin.delete_inventario')(Del_Pedidos.as_view()), name='del_pedidos'),
               path('edit_pedidos/<int:id>/', permission_required('locadora_admin.change_inventario')(Edit_Pedidos.as_view()), name='edit_pedidos'),
 	     
-	      path('new_item_pedido/', login_required(Create_Item_Pedido.as_view()), name='new_item_pedido'),
+	      path('new_item_pedido/<int:id>/', login_required(Create_Item_Pedido.as_view()), name='new_item_pedido'),
               path('del_item_pedido/<int:id>/', permission_required('locadora_admin.delete_inventario')(Del_Item_Pedido.as_view()), name='del_item_pedido'),
 
               path('health', views.health, name='health'),

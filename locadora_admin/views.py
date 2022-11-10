@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 
 from datetime import date
+import decimal
+from django.db.models import Sum
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.views.generic import TemplateView
@@ -409,6 +411,7 @@ class Edit_Pedidos(LoginRequiredMixin, TemplateView):
        print("post:", post)
        form = Pedidos_Form(instance=post)
        data = Pedidos.objects.all()
+       itens_pedido = get_object_or_404(Itens_Pedido, id=id)
        for d in data:
            print("ID Pedido:", d.id)
        args = {'id': id, 'form': form, 'post': post, 'data': data}
@@ -463,47 +466,66 @@ class Create_Pedidos(LoginRequiredMixin, TemplateView):
 
    def get(self, request, *args, **kwargs):
        form = Pedidos_Form()
-       pedidos = Pedidos.objects.all()
-       if kwargs.__len__() != 0:
-           id = int(kwargs['id'])
-           itens_pedido = get_object_or_404(Itens_Pedido, id=id)
-           args = {'form': form, 'pedidos': pedidos, 'itens_pedido': itens_pedido}
-       
-       else:
-           args = {'form': form, 'pedidos': pedidos}
+       try:
+          pedido_id = int(kwargs['id'])
+          print ("PEDIDO ID AQUI", pedido_id)      
+          pedido = get_object_or_404(Pedidos, id=pedido_id)
+          form = Pedidos_Form(instance=pedido)
+          itens_pedido = Itens_Pedido.objects.filter(pedido_id=pedido_id)
+          #args = {'form': form, 'pedidos': pedidos, 'itens_pedido': itens_pedido}
+          init_valor_previsto = decimal.Decimal(sum(itens_pedido.values_list('valor_unitario', flat=True)))
+          form.fields['valor_previsto'].initial = init_valor_previsto
+          print ("VALORES: ", decimal.Decimal(init_valor_previsto)) # FALTA SOMAR O VALOR TOTAL, DELETAR ITENS DA LISTA E BOTOES DE ADICIONAR O CRIAR PEDIDO CASO JA TENHA FEITO OU NAO
+          form.fields['quant_itens_pedido'].initial = pedido.quant_itens_pedido
+          print ("QNT ITENS: ", pedido.quant_itens_pedido)
+          param = pedido.__dict__
+          print (param)
+       except KeyError:
+ 
+          pedidos = Pedidos.objects.all()
+          if Pedidos.objects.count() != 0:
+              pedido_id = Pedidos.objects.all().last().id + 1
+              param = {}
+          else:
+              print("Nao tem")
+              pedido_id = 1
+              param = {}
+      
+          itens_pedido = {} 
+          form.fields['id'].initial = pedido_id
+          form.fields['valor_previsto'].initial = 0
+          form.fields['quant_itens_pedido'].initial = 0
+          form.fields['data_fechamento'].initial = date.today() + timedelta(days=2)
+       args = {'form': form, 'itens_pedido': itens_pedido, 'param': param }
        return render(request, self.template_name, args)
 
    def post(self, request):
        print("inside post")
        if request.method == "POST":
            form = Pedidos_Form(request.POST)
-           if request.POST.get("submitbtn"):
-               print("Submit clicked")
-               if form.is_valid():
-                   print("validating form")
-                   post = form.save(commit=False)
-                   post.save()
-                   print("form saved")
-                   return redirect('Pedidos')
-               else:
-                   print("invalid form")
-                   print("errors:", form.errors)
+           id = int(request.POST.get("id"))
+           id_cliente = int(request.POST.get("cliente"))
+           cliente=cliente = get_object_or_404(Clientes, id=id_cliente)
+           user = get_object_or_404(User, id=1)
+           dt_prev_fech = datetime.strptime(request.POST.get("data_prev_fechamento"), "%d/%m/%Y").date()
+           print("ID CLIENTE: ", id)
+           pedido = Pedidos.objects.create(id=id, cliente=cliente, usuario=user, data_abertura=date.today(), data_prev_fechamento=dt_prev_fech,  valor_previsto='0.0', valor_multa=0, observacoes='', pago=False, compra=False, status=True)
+           cur_pedido = get_object_or_404(Pedidos, id=id)
+           param = cur_pedido.__dict__
+           print (param)
+           args = {'id': id, 'form': form, 'param': param}
+           return render(request, self.template_name, args)
 
 class Create_Item_Pedido(LoginRequiredMixin, TemplateView):
    template_name = 'new_item_pedido.html'
 
-   def get(self, request, *args):
+   def get(self, request, *args, **kwargs):
        form = Item_Pedido_Form()
-       num_pedido = 0
+       num_pedido = int(kwargs['id'])
        item_pedido = Itens_Pedido.objects.all()
-       if Pedidos.objects.count() != 0:
-           pedido = Pedidos.objects.all().last()
-           num_pedido = pedido.id   
-       else:
-           print("Nao tem")
-           num_pedido = 1
-       args = {'form': form, 'Itens_Pedido': item_pedido, 'id': num_pedido + 1}
-       form.fields['pedido'].initial = num_pedido + 1
+       args = {'form': form, 'Itens_Pedido': item_pedido, 'id': num_pedido}
+       print("Este é o ID !!!", num_pedido) 
+       form.fields['pedido'].initial = num_pedido 
        return render(request, self.template_name, args)
 
    def post(self, request, *args, **kwargs):
@@ -523,23 +545,19 @@ class Create_Item_Pedido(LoginRequiredMixin, TemplateView):
                preco = get_object_or_404(Cat_Preco, id=cat_preco_field_value)
                cliente = get_object_or_404(Clientes, id=2)
                user = get_object_or_404(User, id=1)
-               if id is None:
-                   pedido = Pedidos.objects.create(id=id, cliente=cliente, usuario=user, data_abertura=date.today(), data_prev_fechamento=date.today() + timedelta(days=2),  valor_previsto=cat_preco_field_value, valor_multa=0, observacoes='', pago=False, compra=False, status=True)
+               #if id is !None:
+               #pedido = Pedidos.objects.create(id=id, cliente=cliente, usuario=user, data_abertura=date.today(), data_prev_fechamento=date.today() + timedelta(days=2),  valor_previsto=cat_preco_field_value, valor_multa=0, observacoes='', pago=False, compra=False, status=True)
                
                pedido_obj = get_object_or_404(Pedidos, id=id)       
 
                item_pedido = Itens_Pedido.objects.create(pedido=pedido_obj, item=inventario, quantidade=1, valor_unitario=preco.valor, valor_total = preco.valor * 1) #FALTA FAZER UPDATE DOS ITENS NO PEDIDO E ATUALIZAR SOMAS ETC. DEPOIS EXIBIR A LISTA DOS ITENS EM LOOP
 
-                  # post = form.save(commit=False)
-                  # post.save()
-                  # print("form saved")
-               
-               return redirect(f'/new_pedidos/?id={id}')
+               pedido_obj.valor_previsto = pedido_obj.valor_previsto + preco.valor
+               pedido_obj.save()
+                
+               #return redirect(f'/new_pedidos?id={id}')
                #return redirect(f'{new_pedidos}?{id}=pedido.id')
-               #   return redirect('new_pedidos' id=pedido.id)
-               #else:
-                #   print("invalid form")
-                #   print("errors:", form.errors)
+               return redirect('new_pedidos', id=id)
 
 
 class Del_Item_Pedido(LoginRequiredMixin, TemplateView):
@@ -547,21 +565,25 @@ class Del_Item_Pedido(LoginRequiredMixin, TemplateView):
 
    def get(self, request, *args, **kwargs):
        id = int(kwargs['id'])
-       post = get_object_or_404(Itens_Pedido, pedido=id)
+       post = get_object_or_404(Itens_Pedido, id=id)
        print("post:", post)
        form = Item_Pedido_Form(instance=post)
        args = {'id': id, 'form': form, 'post': post}
        return render(request, self.template_name, args)
 
    def post(self, request, **kwargs):
-       Itens_Pedido = get_object_or_404(Itens_Pedido, id=int(kwargs['id']))
+       itens_pedido = get_object_or_404(Itens_Pedido, id=int(kwargs['id']))
+       pedido_id = itens_pedido.pedido_id
+       pedido_obj = get_object_or_404(Pedidos, id=pedido_id)
        if request.method == "POST":
-           form = Item_Pedido_Form(request.POST, instance=Itens_Pedido)
+           form = Item_Pedido_Form(request.POST, instance=itens_pedido)
            if request.POST.get("submitbtn"):
                print("validating form")
-               Itens_Pedido.delete()
+               pedido_obj.valor_previsto = pedido_obj.valor_previsto - itens_pedido.valor_unitario
+               pedido_obj.save()
+               itens_pedido.delete()
                print("form saved")
-               return redirect('new_pedidos')
+               return redirect('new_pedidos', id=pedido_id)
 		   
 
 def health(request):

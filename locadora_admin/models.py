@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime, date
 from django.db.models import Q, Count
+from django.db.models import Sum
 
 # Create your models here.
 
@@ -63,7 +64,8 @@ class Pedidos(models.Model):
    data_abertura = models.DateField()
    data_prev_fechamento = models.DateField()
    data_fechamento = models.DateField(null=True)
-   valor_previsto = models.DecimalField(max_digits=15, decimal_places=2)
+   #valor_previsto = lambda self: self.itens_pedido_set.sum('valor_unitario')
+   valor_previsto = models.DecimalField(max_digits=15, decimal_places=2, null=True)
    valor_multa = models.DecimalField(max_digits=15, decimal_places=2, null=True)
    valor_final = models.DecimalField(max_digits=15, decimal_places=2, null=True)
    observacoes = models.CharField(max_length=300, null=True)
@@ -73,7 +75,7 @@ class Pedidos(models.Model):
    status = models.BooleanField()
 
 class Itens_Pedido(models.Model):
-  pedido = models.ForeignKey(Pedidos, on_delete=models.DO_NOTHING)
+  pedido = models.ForeignKey(Pedidos, on_delete=models.CASCADE)
   item = models.ForeignKey(Inventario, on_delete=models.DO_NOTHING)
   quantidade = models.IntegerField()
   valor_unitario = models.DecimalField(max_digits=15, decimal_places=2)

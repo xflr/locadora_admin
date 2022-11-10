@@ -1,6 +1,6 @@
 	<!DOCTYPE html>
 	{% load static %}
-	<html lang="en">
+	<html lang="en" class="no-js">
 	<head>
 	   {% block title %}
 	   <title>Novo Pedido</title>
@@ -10,11 +10,9 @@
 	   <!-- Place your favicon.ico and apple-touch-icon.png in the template root directory -->
 	   <link href="favicon.ico" rel="shortcut icon">
 	   <link rel="shortcut icon" href="" type="image/ico">
-	   
-   <script src='{% static 'js/font.js' %}'></script>
-   <link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all"/>
+	   <link href="{% static 'css/default.css' %}" rel="stylesheet" type="text/css" media="all"/>
 
-          <style>
+	   <style>
 	   input[type=text], select {
 	     width: 40%;
 	     padding: 12px 20px;
@@ -45,8 +43,9 @@
                 <h2>Adicionar informações</h2>
           {% endif %}
 
-</div>
 <br><br>
+</div>
+
 <div align="center">
 <form method="POST">
    {% csrf_token %}
@@ -81,12 +80,9 @@
           </tbody>
         </table>
         <button class="button button2" id="submitbtn" type="submit" name="submitbtn" value="submitbtn">Criar Pedido</button>
-      </div>
 </form>
 </div>
 <br>
-<br>
-<div align="center">
 {% if param.id != None   %}
    <a href="{% url 'new_item_pedido' param.id %}">Adicionar item ao pedido <i class="fa fa-plus-circle" aria-hidden="true"></i></a><br>
 {% endif %}
@@ -118,8 +114,9 @@
 </tbody>
 </table>
 </div>
-</div>
+<br>
 <a href='/pedidos'>Voltar à pagina anterior</a>
+</div>
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.14/jquery.mask.min.js"></script>
 

@@ -124,6 +124,7 @@ class Pedidos_Form(forms.ModelForm):
    valor_previsto = forms.DecimalField(required=True, max_digits=8, decimal_places=2, localize=True)
 
    quant_itens_pedido = forms.DecimalField(required=True, max_digits=8, decimal_places=0, localize=True)
+   #quant_itens_pedido = forms.DecimalField(required=True, max_digits=8, decimal_places=0, localize=True)
 
    class Meta:
        model = Pedidos

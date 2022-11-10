@@ -36,7 +36,7 @@
 <tbody>	
 {% for p in pub %}
 <tr>
-   <td> <a href="{% url 'edit_pedidos' p.id %}">  <i class="fa fa-pen"></i></a></td> 
+   <td> <a href="{% url 'new_pedidos' p.id %}">  <i class="fa fa-pen"></i></a></td> 
    <td> {{ p.cliente.nome }} </td> 
    <td> {{ p.data_abertura }} </td>
    <td> {{ p.data_prev_fechamento }} </td>

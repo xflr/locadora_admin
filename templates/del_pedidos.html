@@ -3,7 +3,7 @@
 <html lang="en" class="no-js">
 <head>
    {% block title %}
-   <title>Lista de Clientes</title>
+   <title>Remover Pedido</title>
    {% endblock title %}
    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -26,11 +26,11 @@
 </head>
 <body>
 <div class="header">
- <h2>Remover cliente</h2>
+ <h2>Remover Pedido</h2>
 </div>
 
 <div align="center">
-<H2>Remover cliente</H2>
+<H2>Confirma remover este pedido?</H2>
 <br><br>
 </div>
 
@@ -38,18 +38,28 @@
 <form method="POST">
    {% csrf_token %}
    <div>
-   <label>Codigo:</label> {{ id }}
-   <label>Nome: </label>
-   {{ form.nome }}
+   <label>Numero do Pedido: </label> {{ id }}
+<br>
+   <label>Cliente: </label>
+   {{ form.cliente }}
+<br>
+<label>Valor: </label>
+   {{ form.valor_previsto }}
+
    <br><br>
 
 <button class="button button2" id="submitbtn" type="submit" name="submitbtn" value="submitbtn">Remover</button>
    </div>
 </form>
 <br>
-<a href='/clientes'>Voltar à pagina anterior</a>
+<a href='/pedidos'>Voltar à pagina anterior</a>
 
 </div>
-
+<script>
+    var p = document.getElementById('id_cliente');
+    var q = document.getElementById('id_valor_previsto');
+    p.disabled = true;
+    q.disabled = true;
+</script>
 </body>
 </html>
